@@ -1,0 +1,41 @@
+
+## first iteration of json format
+{"target":"NBA Public Bug Bounty","source":"scope.txt","value":"2kleague-dev.nba.com","status_code":null,"in_scope":true,"technologies":[]}
+
+{"target":"NBA Public Bug Bounty","source":"out_of_scope.txt","value":"mcdalerts.nba.com","status_code":null,"in_scope":false,"technologies":[]}
+
+{"target":"NBA Public Bug Bounty","source":"filtered.txt","value":"admin-events.bal.nba.com","status_code":null,"in_scope":null,"technologies":[]}
+
+{"target":"NBA Public Bug Bounty","source":"200.txt","value":"https://cdn-bal.nba.com","status_code":200,"in_scope":null,"technologies":[]}
+
+{"target":"NBA Public Bug Bounty","source":"non_200.txt","value":"https://austin.gleague-dev.nba.com","status_code":400,"in_scope":null,"technologies":[]}
+
+
+## json output format
+{
+"target":"NBA Public Bug Bounty",
+"sources":["tech_detect.txt", "scope.txt", "filtered.txr", "200.txt"],
+"value":"https://syndication.nba.com",
+"status_code":200,
+"in_scope":true,
+"technologies":["Akamai"],
+"dns": {
+	"a": ["104.85.238.48"],
+	"cname": ["delaware.gleague.nba.com.edgekey.net",
+	"e1503.dsci.akamaiedge.net"
+	],
+	
+	"ttl": 300,
+	"resolver": ["1.1.1.1:53"],
+	"timestamp": "2025-06-03T21:41:48.501229869+10:00"
+	}
+}
+
+{
+"target":"NBA Public Bug Bounty",
+"source":"tech_detect.txt",
+"value":"https://osceola.gleague.nba.com",
+"status_code":null,
+"in_scope":null,
+"technologies":["Akamai","Akamai Bot Manager","Envoy","Google Tag Manager","HSTS","Next.js","Node.js","React","Varnish","Webpack"]
+}

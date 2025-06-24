@@ -1,0 +1,68 @@
+bugBounty_v2/
+│
+├── recon/
+│   └── NBA Public Bug Bounty/
+│       ├── NBA Public Bug Bounty_scope.txt
+│       ├── NBA Public Bug Bounty_out_of_scope.txt
+│       ├── ndjson/
+│       │   │── 01_scope.ndjson 
+│       │   │── 02_subs.ndjson
+│       │   │── 03_dns.ndjson
+│       │   │── 04_http.ndjson
+│       │   │── 05_js.ndjson
+│       │   │── 06_secrets.ndjson
+│       │   │── 07_tech.ndjson
+│       │   └── final.ndjson
+│       ├── dns/
+│       │   └── dnsx_output.json
+│       ├── http/
+│       │   ├── 200.txt
+│       │   └── non_200.txt
+│       ├── javascript/
+│       │   ├── js_urls.txt
+│       │   └── js_urls1.txt
+│       ├── subdomains/
+│       │   ├── filtered.txt
+│       │   └── passive_raw.txt
+│       └── tech-detect/
+│           └── NBA Public Bug Bounty_httpx.txt
+│
+├── scripts/
+│   ├── 00_wrapper.sh			# runs a full recon scan
+│   ├── 01_scope/
+│   │   ├── run.sh			# bounty data retrieval
+│   │   └── ndjson_converter.sh		# ndjson data blob 1
+│   │
+│   ├── 02_subs/
+│   │   ├── run.sh			# returns discovered subdomains
+│   │   └── ndjson_converter.sh		# ndjson data blob 2
+│   │
+│   ├── 03_dns/
+│   │   ├── run.sh			# returns ip address, and resolution status
+│   │   └── ndjson_converter.sh		# ndjson data blob 3
+│   │
+│   ├── 04_http/
+│   │   ├── run.sh			# returns http status codes 
+│   │   └── ndjson_converter.sh		# ndjson data blob 4
+│   │
+│   ├── 05_js/
+│   │   ├── run.sh			# returns javascript endpoints
+│   │   └── ndjson_converter.sh		# ndjson data blob
+│   │
+│   ├── 06_secrets/
+│   │   ├── run.sh			# returns discovered tokens / api keys
+│   │   └── ndjson_converter.sh		# ndjson data blob
+│   │
+│   ├── 07_tech/
+│   │   ├── run.sh			# returns endpoint WAF protection, and tech stack
+│   │   └── ndjson_converter.sh		# ndjson data blob 
+│   │
+│   ├── 08_output/
+│   │   ├── aggregate.sh        	# Merges all ndjson into one
+│   │   └── emit_ndjson.sh      	# Shared function (sourceable)
+│   │
+│   └── lib/
+│       ├── config.sh           	# TARGET, BASE_DIR, etc.
+│       └── helpers.sh          	# Common helper functions
+│
+└── README.md                   	# Optional: explains the workflow
