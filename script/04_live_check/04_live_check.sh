@@ -1,13 +1,14 @@
 #!/bin/bash
+source "$(dirname "$0")/../lib/config.sh"
 
 # === module: 04_live_check.sh
 # Description:
 # 
 #
 # === step 0: input arguments and validation
-TARGET="$1"
-INPUT_FILE="recon/$TARGET/dns/resolved.txt"
-OUTPUT_DIR="recon/$TARGET/http"
+TARGET="$TARGET_NAME"
+INPUT_FILE="$DNS_DIR/resolved.txt"
+OUTPUT_DIR="$HTTP_DIR"
 
 if [ -z "$TARGET" ]; then
 	echo "Usage: $0 <target-name>"
@@ -18,7 +19,7 @@ mkdir -p "$OUTPUT_DIR"
 
 # === step 1: check for live hosts using httpx
 echo "[*] Probing live hosts for $TARGET..."
-httpx -l "$INPUT_FILE" -status-code -silent -nc -o "${OUTPUT_DIR}/all_results.txt"
+proxychains httpx -l "$INPUT_FILE" -status-code -silent -nc -o "${OUTPUT_DIR}/all_results.txt"
 
 # === step 2: status-code filter
 grep -v "\[200\]" "${OUTPUT_DIR}/all_results.txt" > "${OUTPUT_DIR}/non_200.txt"

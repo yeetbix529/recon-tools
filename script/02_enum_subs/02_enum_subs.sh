@@ -1,4 +1,5 @@
 #!/bin/bash
+source "$(dirname "$0")/../lib/config.sh"
 
 # === module: 02_enum_subs.sh ===
 # Description:
@@ -7,10 +8,8 @@
 #
 
 # === step 0: input arguments and validation
-TARGET="$1"
-BASE_DIR="/home/kali/bugBounty/bugBounty_v2"
-SCOPE_FILE="$BASE_DIR/recon/$TARGET/${TARGET}_scope.txt"
-OUTPUT_DIR="$BASE_DIR/recon/$TARGET/subdomains"
+TARGET="$TARGET_NAME"
+OUTPUT_DIR="$TARGET_DIR"
 CLEANED_OOS=$(mktemp)
 
 if [ -z "$TARGET" ]; then
@@ -30,11 +29,12 @@ fi
 echo "[*] Extracting domains from: $SCOPE_FILE"
 
 # === step 1:  extract and sanitise url's
-domains=$(cat "$SCOPE_FILE" |
-   sed -E 's|https?://||; s|/.*||; s/^\*\.//' |
-   grep -Eo '([a-z0-9-]+\.)+[a-z]{2,}' |
-   sort -u)
-echo "[*] Found $(echo "$domains" | wc -l) unique root domains."
+domains=$(grep '^\*\.' "$SCOPE_FILE" |                  # Only lines starting with '*.'
+   sed -E 's|^\*\.*||; s|https?://||; s|/.*||' |         # Remove '*.', protocol, and path
+   grep -Eo '([a-z0-9-]+\.)+[a-z]{2,}' |                 # Extract domain pattern
+   sort -u)                                              # Remove duplicates
+
+echo "[*] Found $(echo "$domains" | wc -l) unique wildcard root domains."
 
 # === step 2: passive enumeration
 echo "[*] Starting passive enumeration..."
@@ -50,8 +50,7 @@ done
 # === step 3: remove duplicate results
 sort -u "$OUTPUT_DIR/passive_raw.txt" > "$OUTPUT_DIR/passive.txt"
 
-#echo "[+] Passive subdomains saved to $OUTPUT_DIR/passive.txt"
-
+echo "[+] Passive subdomains saved to $OUTPUT_DIR/passive.txt"
 # === step 4: check against out_of_scope.sh
 IN_SCOPE="$OUTPUT_DIR/passive.txt"
 OUT_SCOPE="$BASE_DIR/recon/$TARGET/${TARGET}_out_of_scope.txt"
@@ -68,5 +67,11 @@ grep -vFf "$CLEANED_OOS" "$IN_SCOPE" > "$OUTPUT"
 
 rm "$CLEANED_OOS"
 rm "$OUTPUT_DIR/passive.txt"
+mv "$OUTPUT_DIR/passive_raw.txt" "$OUTPUT_DIR/subdomains/passive_raw.txt"
+mv "$OUTPUT_DIR/filtered.txt" "$OUTPUT_DIR/subdomains/filtered.txt"
+
+cat "$SCOPE_FILE" "$OUTPUT_DIR/subdomains/filtered.txt" | sort -u > "$OUTPUT_DIR/combined_scope.txt"
+echo "[+] Combined scope saved to $OUTPUT_DIR/combined_scope.txt"
+
 echo "[+] filtered subdomains saved to $OUTPUT"
 

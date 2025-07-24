@@ -1,4 +1,5 @@
 #!/bin/bash
+source "$(dirname "$0")/../lib/config.sh"
 
 # === module: 03_dns_resolution.sh ===
 # Description:
@@ -7,14 +8,14 @@
 #
 
 # === step 0: input arguments and validation
-TARGET="$1"
-INPUT_FILE="recon/$TARGET/subdomains/filtered.txt"
-OUTPUT_DIR="recon/$TARGET/dns"
-mkdir -p "recon/$TARGET/dns"
+TARGET="$TARGET_NAME"
+INPUT_FILE="$SUBS_DIR/filtered.txt"
+OUTPUT_DIR="$DNS_DIR"
+mkdir -p "$DNS_DIR"
 
 if [ -z "$TARGET" ]; then
-	echo "Usage: $0 <target-name>"
-	echo "Example: 03_dns_resolution.sh NBA Public Bug Bounty"
+	echo "Usage: $0 <target"
+	echo "Example: 03_dns_resolution.sh"
 	exit 1
 fi
 
@@ -26,7 +27,7 @@ fi
 # === step 1: resolve dns using dnsx
 echo "[*] Resolving domains..."
 
-dnsx -silent -a -resp -json -retry 2 -rl 300 -l "$INPUT_FILE" > dnsx_output.js
+proxychains dnsx -silent -a -resp -json -retry 2 -rl 300 -l "$INPUT_FILE" > dnsx_output.js
 mv "dnsx_output.js" "$OUTPUT_DIR/dnsx_output.js"
  
 # === step 2: parse successful resolutions

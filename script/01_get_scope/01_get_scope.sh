@@ -1,4 +1,5 @@
 #!/bin/bash
+source "$(dirname "$0")/../lib/config.sh"
 
 # === module: 01_get_scope.sh ===
 # Description:
@@ -8,8 +9,8 @@
 # === step 0: variable intialisation ===
 
 PLATFORM="$1"
-TARGET="$2"
-BASE_DIR="/home/kali/bugBounty/bugBounty_v2/"
+TARGET="$TARGET_NAME"
+
 
 if [ -z "$TARGET" ] || [ -z "$PLATFORM" ]; then
 	echo "Usage: $0 <platform-name> <target-name>"
@@ -18,7 +19,7 @@ if [ -z "$TARGET" ] || [ -z "$PLATFORM" ]; then
 	exit 1
 fi
 
-mkdir -p "../../recon/$TARGET"
+mkdir -p "$TARGET_DIR"
 
 # === step 1: fetch latest scope data ===
 
@@ -59,7 +60,7 @@ case "$PLATFORM" in
       | tr -d '"' \
       | sort -u > "../${TARGET}_scope.txt"
       
-      mv "../${TARGET}_scope.txt" "$BASE_DIR/recon/$TARGET/${TARGET}_scope.txt"
+      mv "../${TARGET}_scope.txt" "$TARGET_DIR/${TARGET}_scope.txt"
       echo "In-scope targets saved to ../../${TARGET}_scope.txt"
       
     jq --arg TARGET "$TARGET" '

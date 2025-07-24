@@ -7,11 +7,10 @@ IFS=$'\n\t'
 # format ideal for elastic stack integration.
 
 ### --- configuration ----------------------------------------
-TARGET="NBA Public Bug Bounty"
-BASE_DIR="recon/$TARGET"
+TARGET="$1"
+BASE_DIR="/home/kali/bugBounty/bugBounty_v2"
 OUTFILE="$BASE_DIR/output.ndjson"
 > "$OUTFILE"
-TECH_FILE="recon/$TARGET/tech-detect/${TARGET}_httpx.txt"
 
 ### --- output structure prep -------------------------------
 emit_ndjson() {
@@ -35,25 +34,25 @@ emit_ndjson() {
 while read -r line; do
 	[[ -z "$line" ]] && continue
 	emit_ndjson "scope.txt" "$line" null true >> "$OUTFILE"
-done < "recon/$TARGET/${TARGET}_scope.txt"
+done < "$BASE_DIR/recon/$TARGET/${TARGET}_scope.txt"
 
 # --- Out of Scope
 while read -r line; do
 	[[ -z "$line" ]] && continue
 	emit_ndjson "out_of_scope.txt" "$line" null false >> "$OUTFILE"
-done < "recon/$TARGET/${TARGET}_out_of_scope.txt"
+done < "$BASE_DIR/recon/$TARGET/${TARGET}_out_of_scope.txt"
 
 # --- Filtered subdomains
 while read -r line; do
 	[[ -z "$line" ]] && continue
 	emit_ndjson "filtered.txt" "$line" null null >> "$OUTFILE"
-done < recon/$TARGET/subdomains/filtered.txt
+done < "$BASE_DIR/recon/$TARGET/subdomains/filtered.txt"
 
 # --- 200.txt (Live URLs)
 while read -r url; do
 	[[ -z "$url" ]] && continue
 	emit_ndjson "200.txt" "$url" 200 null >> "$OUTFILE"
-done < recon/$TARGET/http/200.txt
+done < "$BASE_DIR/recon/$TARGET/http/200.txt"
 
 # --- non_200.txt (Non-200s with status)
 regex='^(https?://[^ ]+) \[([0-9]{3})\]$'
@@ -65,7 +64,7 @@ while read -r line; do
 		status="${BASH_REMATCH[2]}"
 		emit_ndjson "non_200.txt" "$url" "$status" null >> "$OUTFILE"
 	fi
-done < recon/$TARGET/http/non_200.txt
+done < "$BASE_DIR/recon/$TARGET/http/non_200.txt"
 
 # --- tech_detect.txt (Tech stack detection)
 while read -r line; do
@@ -81,7 +80,7 @@ while read -r line; do
 		# Fallback: just a URL without stack info
 		emit_ndjson "tech_detect.txt" "$line" null null '[]' >> "$OUTFILE"
 	fi
-done < "$TECH_FILE"
+done < "$BASE_DIR/recon/$TARGET/tech-detect/${TARGET}_httpx.txt"
 
 ### --- Complete status -----------------------------------------
 
