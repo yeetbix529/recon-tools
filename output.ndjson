@@ -1,7 +1,0 @@
-{"target":"Syfe","source":"scope.txt","value":"api-uat-bugbounty.nonprod.syfe.com","status_code":null,"in_scope":true,"technologies":[]}
-{"target":"Syfe","source":"scope.txt","value":"uat-bugbounty.nonprod.syfe.com","status_code":null,"in_scope":true,"technologies":[]}
-{"target":"Syfe","source":"filtered.txt","value":"api-uat-bugbounty.nonprod.syfe.com","status_code":null,"in_scope":null,"technologies":[]}
-{"target":"Syfe","source":"filtered.txt","value":"uat-bugbounty.nonprod.syfe.com","status_code":null,"in_scope":null,"technologies":[]}
-{"target":"Syfe","source":"200.txt","value":"https://uat-bugbounty.nonprod.syfe.com","status_code":200,"in_scope":null,"technologies":[]}
-{"target":"Syfe","source":"non_200.txt","value":"https://api-uat-bugbounty.nonprod.syfe.com","status_code":404,"in_scope":null,"technologies":[]}
-{"target":"Syfe","source":"tech_detect.txt","value":"https://uat-bugbounty.nonprod.syfe.com","status_code":null,"in_scope":null,"technologies":["Amazon S3","Amazon Web Services","Cloudflare","Datadog","Google Tag Manager","HSTS","Linkedin Ads","jQuery"]}
